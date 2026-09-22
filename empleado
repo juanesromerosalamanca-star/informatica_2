@@ -1,1 +1,98 @@
 
+#a
+class Empleado:
+    """
+    Clase base para representar un empleado en el sistema.
+    """
+    def __init__(self, nombre, identificacion):
+        self.nombre = nombre
+        self.identificacion = identificacion
+        self.tipo = "Empleado General"
+
+    def calcular_pago(self):
+        return 0.0
+
+
+class EmpleadoFijo(Empleado):
+    """
+    Empleado con un salario mensual fijo.
+    """
+    def __init__(self, nombre, identificacion, salario_mensual):
+        self.nombre = nombre
+        self.identificacion = identificacion
+        self.salario_mensual = salario_mensual
+        self.tipo = "Empleado Fijo" 
+
+    def calcular_pago(self):
+        return self.salario_mensual
+
+
+class EmpleadoPorHoras(Empleado):
+    """
+    Empleado que cobra según las horas trabajadas.
+    """
+    def __init__(self, nombre, identificacion, horas_trabajadas, valor_hora):
+        self.nombre = nombre
+        self.identificacion = identificacion
+        self.horas_trabajadas = horas_trabajadas
+        self.valor_hora = valor_hora
+        self.tipo = "Empleado Por Horas" 
+
+    def calcular_pago(self):
+        return self.horas_trabajadas * self.valor_hora
+
+
+class EmpleadoPorComision(Empleado):
+    """
+    Empleado con salario base más un porcentaje sobre sus ventas.
+    """
+    def __init__(self, nombre, identificacion, salario_base, ventas, porcentaje_comision):
+        self.nombre = nombre
+        self.identificacion = identificacion
+        self.salario_base = salario_base
+        self.ventas = ventas
+        self.porcentaje_comision = porcentaje_comision  
+        self.tipo = "Empleado Por Comisión"  
+    def calcular_pago(self):
+        return self.salario_base + (self.ventas * self.porcentaje_comision)
+
+
+
+
+
+
+
+
+
+    
+
+
+#b
+emp1 = EmpleadoFijo("Juan Pérez", "101", 2500000)
+emp2 = EmpleadoPorHoras("María López", "102", 160, 15000)
+emp3 = EmpleadoPorComision("Carlos Gómez", "103", 1500000, 20000000, 0.03)
+emp4 = EmpleadoFijo("Ana Rodríguez", "104", 3200000)
+emp5 = EmpleadoPorHoras("Pedro Martínez", "105", 120, 18000)
+
+
+lista_empleados = [emp1, emp2, emp3, emp4, emp5]
+
+total_nomina = 0
+
+print("=" * 70)
+print("                REPORTES DE NÓMINA DE LA EMPRESA")
+print("=" * 70)
+
+
+for emp in lista_empleados:
+    pago = emp.calcular_pago()
+    total_nomina += pago
+    
+    
+    print(f"ID: {emp.identificacion:<4} | Nombre: {emp.nombre:<15} | Tipo: {emp.tipo:<22} | Pago: ${pago:,.2f}")
+
+print("-" * 70)
+
+
+print(f"VALOR TOTAL DE LA NÓMINA: ${total_nomina:,.2f}")
+print("=" * 70)
