@@ -1,1 +1,69 @@
+from abc import ABC, abstractmethod
 
+
+class VehiculoAutonomo(ABC):
+    def init(self, codigo, nivel_bateria):
+        self.codigo = codigo
+        self.nivel_bateria = nivel_bateria
+
+    @abstractmethod
+    def calcular_consumo(self, distancia):
+        pass
+
+    @abstractmethod
+    def mover(self, distancia):
+        pass
+
+    def actualizar_bateria(self, distancia):
+        consumo = self.calcular_consumo(distancia)
+        tipo = type(self).name
+        if consumo > self.nivel_bateria:
+            print(self.codigo + " (" + tipo + ") no puede recorrer " + str(distancia) + " km, bateria insuficiente")
+            return
+        self.nivel_bateria = self.nivel_bateria - consumo
+        print(self.codigo + " (" + tipo + ") recorrio " + str(distancia) + " km, consumo " + str(consumo) + ", bateria restante " + str(self.nivel_bateria))
+
+
+class AutomovilElectrico(VehiculoAutonomo):
+    def init(self, codigo, nivel_bateria, consumo_por_km):
+        super().init(codigo, nivel_bateria)
+        self.consumo_por_km = consumo_por_km
+
+    def calcular_consumo(self, distancia):
+        return distancia * self.consumo_por_km
+
+    def mover(self, distancia):
+        self.actualizar_bateria(distancia)
+
+
+class Dron(VehiculoAutonomo):
+    def init(self, codigo, nivel_bateria, altura_vuelo):
+        super().init(codigo, nivel_bateria)
+        self.altura_vuelo = altura_vuelo
+
+    def calcular_consumo(self, distancia):
+        return (distancia * 2) + (self.altura_vuelo * 0.5)
+
+    def mover(self, distancia):
+        self.actualizar_bateria(distancia)
+
+
+class RobotTerrestre(VehiculoAutonomo):
+    def init(self, codigo, nivel_bateria, peso_carga):
+        super().init(codigo, nivel_bateria)
+        self.peso_carga = peso_carga
+
+    def calcular_consumo(self, distancia):
+        return distancia + (self.peso_carga * 0.3)
+
+    def mover(self, distancia):
+        self.actualizar_bateria(distancia)
+
+
+vehiculos = []
+vehiculos.append(AutomovilElectrico("AE-01", 100, 5))
+vehiculos.append(Dron("DR-01", 50, 20))
+vehiculos.append(RobotTerrestre("RT-01", 80, 30))
+
+for vehiculo in vehiculos:
+    vehiculo.mover(10)
