@@ -1,1 +1,116 @@
+#a
 
+class Notificacion:
+   
+    def __init__(self):
+        pass
+
+    def enviar(self, destinatario, mensaje):
+       
+        print("Enviando notificación genérica...")
+
+
+class CorreoElectronico(Notificacion):
+   
+    def __init__(self):
+        pass
+
+    def enviar(self, destinatario, mensaje):
+       
+        if "@" in destinatario:
+            print(f"[CORREO -> {destinatario}] Mensaje: {mensaje}")
+        else:
+            print(f"[ERROR CORREO] Destinatario inválido: '{destinatario}'. Debe contener '@'.")
+
+
+class SMS(Notificacion):
+   
+    def __init__(self):
+        pass
+
+    def enviar(self, destinatario, mensaje):
+       
+        num_texto = str(destinatario)
+        contador = 0
+        for digito in num_texto:
+            contador += 1
+
+        
+        if contador >= 10:
+            print(f"[SMS -> {destinatario}] Mensaje: {mensaje}")
+        else:
+            print(f"[ERROR SMS] Número inválido: '{destinatario}'. Debe tener al menos 10 dígitos.")
+
+
+class NotificacionApp(Notificacion):
+    """
+    Notificación dentro de la aplicación.
+    """
+    def __init__(self):
+        pass
+
+    def enviar(self, destinatario, mensaje):
+        # Validación: El identificador de usuario no debe estar vacío[cite: 4]
+        if destinatario != "":
+            print(f"[APP -> User ID: {destinatario}] Mensaje: {mensaje}")
+        else:
+            print(f"[ERROR APP] Identificador de usuario vacío.")
+
+
+
+
+
+
+
+
+
+
+
+
+
+def enviar_aviso(notificacion, destinatario, mensaje):
+    """
+    Recibe cualquier objeto de notificación y llama a su método enviar()[cite: 4].
+    """
+    notificacion.enviar(destinatario, mensaje)
+
+
+
+
+
+
+
+
+
+#b
+correo = CorreoElectronico()
+sms = SMS()
+app = NotificacionApp()
+
+medios_notificacion = [correo, sms, app]
+
+
+mensaje_aviso = "Recordatorio: Mañana vence el plazo para entregar el taller de POO."
+
+
+destinatarios = ["persona@gmail.com", "3001234567", "usr_10293"]
+
+print("=" * 70)
+print("             ENVIANDO AVISO ACADÉMICO (POLIMORFISMO)")
+print("=" * 70)
+
+
+for i in range(3):
+    medio = medios_notificacion[i]
+    destinatario = destinatarios[i]
+    
+    
+    enviar_aviso(medio, destinatario, mensaje_aviso)
+
+print("\n" + "=" * 70)
+print("             PRUEBAS DE VALIDACIÓN DE ERRORES")
+print("=" * 70)
+
+correo.enviar("correo_sin_arroba.com", mensaje_aviso)  
+sms.enviar("3001234", mensaje_aviso)                   
+app.enviar("", mensaje_aviso)                           
